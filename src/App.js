@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, {useState} from "react";
+import Navbar from "./components/Navbar";
+import Textarea from "./components/Textarea";
+import Alert from "./components/Alert";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [Mode, setMode] = useState("light"); //dark mode enable or not
+  const [alert, setAlert] = useState(null);
+  const [selected, setSelected] = useState("default");
+
+ const  modeChange = (event) => {
+  let newmode = event.target.value;
+    setSelected(newmode);
+    setMode(newmode);
+    showAlert(`mode changed to ${newmode}`, "success");
+  }
+  
+  const showAlert=(message,type)=>{
+       setAlert({
+        msg:message,
+        type:type,
+       })
+       setTimeout(() => {
+        setAlert(null);
+       }, 2000);
+  }
+  return(
+    <>
+    <div className={`container-fluid bg-${Mode}-subtle p-3`}>
+    <Navbar heading ="app" mode ={selected}  selected ={selected} modeChange ={modeChange}/>
+    <Alert alert ={alert} />
+    <Textarea mode={selected} showAlert={showAlert} />
     </div>
+      </>
   );
 }
 
